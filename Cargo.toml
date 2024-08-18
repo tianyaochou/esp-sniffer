@@ -1,0 +1,35 @@
+[package]
+name = "esp-sniffer"
+version = "0.1.0"
+authors = ["tianyaochou <tianyaochou@fastmail.com>"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+esp-backtrace = { version = "0.13.0", features = [
+    "esp32c6",
+    "exception-handler",
+    "panic-handler",
+    "println",
+] }
+esp-hal = { git = "https://github.com/esp-rs/esp-hal", version = "0.19.0", features = [ "esp32c6" ] }
+esp-println = { version = "0.10.0", features = ["esp32c6", "log"] }
+log = { version = "0.4.21" }
+esp-ieee802154 = { git = "https://github.com/esp-rs/esp-hal", version = "*", features = [ "esp32c6" ] }
+ieee802154 = "*"
+byte = "*"
+derive_more = "*"
+critical-section = "1.1.2"
+[profile.dev]
+# Rust debug is too slow.
+# For debug builds always builds with some optimization
+opt-level = "s"
+
+[profile.release]
+codegen-units = 1 # LLVM can perform better optimizations using a single thread
+debug = 2
+debug-assertions = false
+incremental = false
+lto = 'fat'
+opt-level = 's'
+overflow-checks = false
