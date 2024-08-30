@@ -1,0 +1,11 @@
+[package]
+name = "extcap"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = "*"
+r-extcap = "0.2.4"
+anyhow = "*"
+pcap-file = "2.0.0"
+serialport = "4.5.0"

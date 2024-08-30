@@ -10,7 +10,7 @@
       systems = [ "x86_64-linux" "x86_64-darwin" ];
       perSystem = { pkgs, lib, ... }:{
         devenv.shells.default = {
-          packages = with pkgs; [ probe-rs espflash ];
+          packages = with pkgs; [ probe-rs espflash darwin.IOKit ];
           env = {
           };
           languages.rust = {

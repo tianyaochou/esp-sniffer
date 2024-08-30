@@ -18,7 +18,7 @@ log = { version = "0.4.21" }
 esp-ieee802154 = { git = "https://github.com/esp-rs/esp-hal", version = "*", features = [ "esp32c6" ] }
 ieee802154 = "*"
 byte = "*"
-derive_more = "*"
+derive_more = { version = "0.15.0", features = [ "no_std" ] }
 critical-section = "1.1.2"
 [profile.dev]
 # Rust debug is too slow.

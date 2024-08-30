@@ -1,0 +1,55 @@
+use std::path::{Path, PathBuf};
+
+use clap::Parser;
+use r_extcap::{cargo_metadata, config::*, controls::*, interface::*, ExtcapArgs, ExtcapStep};
+
+#[derive(Debug, Parser)]
+struct AppArgs {
+    #[command(flatten)]
+    extcap: ExtcapArgs,
+}
+
+fn main() -> anyhow::Result<()> {
+    let int = Interface::builder()
+        .value("test".into())
+        .display("Test".into())
+        .dlt(Dlt {
+            data_link_type: DataLink::IEEE802_15_4,
+            name: "ESP32".into(),
+            display: "ESP32 IEEE802.15.4".into(),
+        })
+        .build();
+    match AppArgs::parse().extcap.run()? {
+        ExtcapStep::Interfaces(step) => {
+            let channel_control = SelectorControl {
+                control_number: 0,
+                display: "Channel".into(),
+                tooltip: None,
+                options: (11..=26)
+                    .map(|chan| SelectorControlOption {
+                        value: chan.to_string(),
+                        display: chan.to_string(),
+                        default: if (chan == 15) { true } else { false },
+                    })
+                    .collect(),
+            };
+            step.list_interfaces(&cargo_metadata!(), &[&int], &[&channel_control]);
+            Ok(())
+        }
+        ExtcapStep::Dlts(step) => {
+            step.print_dlt(&int);
+            Ok(())
+        }
+        ExtcapStep::Config(step) => {
+            step.list_configs(&[]);
+            Ok(())
+        }
+        ExtcapStep::ReloadConfig(step) => {
+            // todo
+            Ok(())
+        }
+        ExtcapStep::Capture(step) => {
+            step.
+        },
+    }
+}
